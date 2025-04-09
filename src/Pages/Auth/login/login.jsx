@@ -8,9 +8,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Container, Box, Typography, TextField, Button } from "@mui/material";
 import axiosInstance from "../../../api/axios/axios";
 import { endPoints } from "../../../api/endPoints/endpoints";
+import { useTokenStore } from "../../../store/authStore";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
+  const setTok = useTokenStore((state) => state.setToken)
   const navigate = useNavigate();
 
   const schema = yup.object().shape({
@@ -34,6 +36,7 @@ const LoginForm = () => {
         toast.success(response.data.message);
         localStorage.setItem("token", response.data.token);
         navigate("/cms/list"); // Corrected navigation
+        setTok(response.data.token)
       } else {
         toast.error(response.data.message);
       }
@@ -68,12 +71,12 @@ const LoginForm = () => {
             helperText={errors?.password?.message}
           />
 
-          <Button 
-            type="submit" 
-            fullWidth 
-            variant="contained" 
-            color="primary" 
-            sx={{ mt: 2 }} 
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2 }}
             disabled={loading}
           >
             {loading ? "Loading..." : "Log In"}

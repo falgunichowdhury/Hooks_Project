@@ -12,14 +12,21 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useTokenStore } from '../../store/authStore';
+import { colors } from '@mui/material';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = ['list', 'create'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+  const navigate = useNavigate()
+  const setToken = useTokenStore((state) => state.setToken)
+  const token = useTokenStore((state) => state.token)
+  console.log(token, "dfcgkj")
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -34,6 +41,18 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    setToken()
+    navigate("/")
+    toast("Logout Successfully")
+
+  }
+  React.useEffect(() => {
+    setToken()
+  }, [])
 
   return (
     <AppBar position="static">
@@ -55,7 +74,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            {token && <Link onClick={handleLogout} style={{ color: "white" }}>Logout</Link>}
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -97,6 +116,7 @@ function ResponsiveAppBar() {
             variant="h5"
             noWrap
             component="a"
+
             href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
@@ -109,17 +129,24 @@ function ResponsiveAppBar() {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Project
           </Typography>
+
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
+              <Link to={`/cms/${page}`}>
+                <Button
+                  key={page}
+
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page}
+                </Button>
+
+              </Link>
+
+
+
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
@@ -127,6 +154,7 @@ function ResponsiveAppBar() {
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
+
             </Tooltip>
             <Menu
               sx={{ mt: '45px' }}
@@ -151,6 +179,7 @@ function ResponsiveAppBar() {
               ))}
             </Menu>
           </Box>
+
         </Toolbar>
       </Container>
     </AppBar>
