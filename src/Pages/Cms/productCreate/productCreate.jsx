@@ -6,7 +6,7 @@ import axiosInstance from "../../../api/axios/axios";
 
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { endPoints } from "../../../api/endPoints/endpoints";
+import { endPoints } from "../../../api/endPoints/endpoints.js";
 
 const ProductCreate = () => {
     const [imagePreview, setImagePreview] = useState(null);
