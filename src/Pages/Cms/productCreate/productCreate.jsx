@@ -3,9 +3,10 @@ import { Stack, Grid, Paper, TextField, Button, Typography } from "@mui/material
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import axiosInstance from "../../../api/axios/axios";
-import { endPoints } from "../../../api/endPoints/endpoints";
+
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { endPoints } from "../../../api/endPoints/endpoints";
 
 const ProductCreate = () => {
     const [imagePreview, setImagePreview] = useState(null);
